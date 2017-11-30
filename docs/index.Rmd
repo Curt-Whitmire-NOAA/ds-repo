@@ -58,4 +58,81 @@ ggplot(data = mpg, aes(x = displ, y = hwy)) +
   geom_point(aes(color = class))
 ```
 
+## fix color
 
+```{r fix color}
+ggplot(data = mpg, aes(x = displ, y = hwy, size = class)) + 
+  geom_point(alpha = 0.2, color = "blue")
+```
+
+## Exercise 5.5
+
+```{r exercise5.5}
+ggplot(data = mpg) +
+  aes(x = displ, y = hwy) + 
+  geom_point(color = "blue")
+```
+
+## Geoms
+
+```{r geom_examples}
+ggplot(mpg,aes(x = drv, y = hwy)) +
+  geom_violin()
+```
+
+## Multiple Geoms
+
+```{r mult_geoms}
+ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+  geom_point() +
+  facet_wrap(~ manufacturer)
+```
+
+## Data Wrangline with 'dplyr'
+
+'read_csv' is from the 'readr' package (part of the tidyverse). It is not 'read.csv', which is part of base R.
+```{r tidy_examples}
+library(tidyverse)
+library(dplyr)
+
+gapminder <- readr::read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv")
+
+gapminder
+
+summary(gapminder)
+filter(gapminder, lifeExp < 60)
+
+## base R method with '$'
+swed = filter(gapminder, country == "Sweden")
+mean(swed$lifeExp)
+
+## pipe operater '%>%'
+gapminder %>% 
+  filter(country == "Sweden")  %>%  
+  summarize(mean(lifeExp))
+
+## useful functions to get to know your data:
+head(gapminder) # show the first 6 rows of data
+tail(gapminder) # show the last 6 rows of data
+
+head(gapminder, 30) # say how many rows
+tail(gapminder, 9) # return dimensions of data
+
+str(gapminder) # check out the structure of the data
+
+names(gapminder) # show column headers
+
+dim(gapminder) # return dimensions of the data
+
+ncol(gapminder) # return number of columns
+nrow(gapminder) # return number of rows
+
+c(nrow(gapminder), ncol(gapminder)) #  combine function to build things
+
+summary(gapminder) # return summary of data
+
+# for everything above, we operated on the whole 'gapminder' dataset
+
+head(gapminder$lifeExp) # this is NOT tidyverse formatting
+
+```
