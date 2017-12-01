@@ -136,3 +136,68 @@ summary(gapminder) # return summary of data
 head(gapminder$lifeExp) # this is NOT tidyverse formatting
 
 ```
+
+## Selecting columns with 'select'
+
+```{r selectd}
+# select 2 columns
+gapminder %>% 
+  select(year, lifeExp) %>% 
+  tail()
+
+# combine wthat we've learned
+gapminder %>% 
+  filter(country == "Cambodia") %>% 
+  select(country, year, pop, gdpPercap)
+
+## same as above but with less typing
+gapminder %>% 
+  filter(country == "Cambodia") %>% 
+  select(-continent, -lifeExp)
+
+## a few more things with filter
+gapminder %>% 
+  filter(country == "Mexico",
+         year == 2002)
+
+## 'mutate()' to add columns
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap)
+
+## let's add an index
+gapminder %>% 
+  mutate(index = 1:nrow(gapminder)) %>% 
+  tail()
+
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap) %>% 
+  mutate(index = 1:nrow(gapminder)) %>% 
+  tail()
+
+gapminder %>% 
+  mutate(gdp = pop * gdpPercap,
+         index = 1:nrow(gapminder)) %>% 
+  tail()
+
+## Exercise
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam")) %>% 
+  select(country, gdpPercap) %>% 
+  mutate(max_gdpPercap = max(gdpPercap))
+
+## group_by() so that we can get 2 maxes
+## Exercise
+gapminder %>% 
+  filter(country %in% c("Egypt", "Vietnam")) %>% 
+  group_by(country) %>% 
+  summarize(max_gdpPercap = max(gdpPercap))
+
+gapminder %>% 
+  group_by(country) %>% 
+  summarize(max_gdpPercap = max(gdpPercap))
+
+## let's keep the year associated with that max_gdpPercap
+gapminder %>% 
+  group_by(country) %>% 
+  filter(gdpPercap == max(gdpPercap))
+```
